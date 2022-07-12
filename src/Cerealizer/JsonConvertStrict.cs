@@ -1,20 +1,22 @@
-﻿using System;
-using System.IO;
-using Newtonsoft.Json;
-
-namespace Cerealizer;
-
-public static class JsonConvertStrict
+﻿namespace Cerealizer
 {
-    public static Func<StrictJsonSerializerSettings>? DefaultSettings { get; set; }
+    using System;
+    using System.IO;
 
-    public static object DeserializeObject(string value, Type type, StrictJsonSerializerSettings settings)
+    using Newtonsoft.Json;
+
+    public static class JsonConvertStrict
     {
-        var jsonSerializer = StrictJsonSerializer.CreateDefault(settings);
+        public static Func<StrictJsonSerializerSettings>? DefaultSettings { get; set; }
 
-        using (var reader = new JsonTextReader(new StringReader(value)))
+        public static object DeserializeObject(string value, Type type, StrictJsonSerializerSettings settings)
         {
-            return jsonSerializer.Deserialize(reader, type);
+            var jsonSerializer = StrictJsonSerializer.CreateDefault(settings);
+
+            using (var reader = new JsonTextReader(new StringReader(value)))
+            {
+                return jsonSerializer.Deserialize(reader, type);
+            }
         }
     }
 }

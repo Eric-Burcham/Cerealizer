@@ -1,14 +1,15 @@
-﻿namespace Cerealizer.Tests.TestObjects;
-
-public class ProductLong
+﻿namespace Cerealizer.Tests.TestObjects
 {
-    public DateTime ExpiryDate;
+    public class ProductLong
+    {
+        public DateTime ExpiryDate;
 
-    public decimal MyPrice;
+        public decimal MyPrice;
 
-    public string Name;
+        public string Name;
 
-    public decimal Price;
+        public decimal Price;
 
-    public string[] Sizes;
+        public string[] Sizes;
+    }
 }

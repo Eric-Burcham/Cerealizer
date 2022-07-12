@@ -1,77 +1,87 @@
-using Cerealizer.Tests.TestObjects;
-using FluentAssertions;
-using Newtonsoft.Json;
-
-namespace Cerealizer.Tests;
-
-public class MissingTypeMemberHandlingTests
+namespace Cerealizer.Tests
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
+    using FluentAssertions;
 
-    [Test]
-    public void WhenTheTargetTypeIsMissingAPropertyAnExceptionIsThrown()
+    using Newtonsoft.Json;
+
+    using TestObjects;
+
+    public class MissingTypeMemberHandlingTests
     {
-        var product = new Product
+        [SetUp]
+        public void Setup()
         {
-            Name = "Apple",
-            ExpiryDate = new DateTime(2008, 12, 28),
-            Price = 3.99M,
-            Sizes = new[] { "Small", "Medium", "Large" }
-        };
+        }
 
-        var output = JsonConvert.SerializeObject(product, Formatting.Indented);
-        //{
-        //  "Name": "Apple",
-        //  "ExpiryDate": new Date(1230422400000),
-        //  "Price": 3.99,
-        //  "Sizes": [
-        //    "Small",
-        //    "Medium",
-        //    "Large"
-        //  ]
-        //}
-
-        ProductLong result = null;
-        Action deserializeObject = () =>
-            result = (ProductLong)JsonConvertStrict.DeserializeObject(output, typeof(ProductLong),
-                new StrictJsonSerializerSettings());
-        deserializeObject.Should().Throw<JsonSerializationException>().WithMessage(
-            $"Could not find property 'MyPrice' on object of type '{nameof(ProductLong)}' in JSON payload.");
-
-        result.Should().BeNull();
-    }
-
-    public void WhenTheTargetTypeIsNotMissingAPropertyNoExceptionIsThrown()
-    {
-        var product = new Product
+        [Test]
+        public void WhenTheTargetTypeIsMissingAPropertyAnExceptionIsThrown()
         {
-            Name = "Apple",
-            ExpiryDate = new DateTime(2008, 12, 28),
-            Price = 3.99M,
-            Sizes = new[] { "Small", "Medium", "Large" }
-        };
+            var product = new Product
+            {
+                Name = "Apple",
+                ExpiryDate = new DateTime(2008, 12, 28),
+                Price = 3.99M,
+                Sizes = new[] { "Small", "Medium", "Large" }
+            };
 
-        var output = JsonConvert.SerializeObject(product, Formatting.Indented);
-        //{
-        //  "Name": "Apple",
-        //  "ExpiryDate": new Date(1230422400000),
-        //  "Price": 3.99,
-        //  "Sizes": [
-        //    "Small",
-        //    "Medium",
-        //    "Large"
-        //  ]
-        //}
+            var output = JsonConvert.SerializeObject(product, Formatting.Indented);
 
-        Product result = null;
-        Action deserializeObject = () =>
-            result = (Product)JsonConvertStrict.DeserializeObject(output, typeof(Product),
-                new StrictJsonSerializerSettings());
-        deserializeObject.Should().NotThrow();
+            //{
+            //  "Name": "Apple",
+            //  "ExpiryDate": new Date(1230422400000),
+            //  "Price": 3.99,
+            //  "Sizes": [
+            //    "Small",
+            //    "Medium",
+            //    "Large"
+            //  ]
+            //}
 
-        result.Should().NotBeNull();
+            ProductLong result = null;
+            Action deserializeObject = () =>
+                result = (ProductLong)JsonConvertStrict.DeserializeObject(
+                    output,
+                    typeof(ProductLong),
+                    new StrictJsonSerializerSettings());
+
+            deserializeObject.Should().Throw<JsonSerializationException>().WithMessage($"Could not find property 'MyPrice' on object of type '{nameof(ProductLong)}' in JSON payload.");
+
+            result.Should().BeNull();
+        }
+
+        public void WhenTheTargetTypeIsNotMissingAPropertyNoExceptionIsThrown()
+        {
+            var product = new Product
+            {
+                Name = "Apple",
+                ExpiryDate = new DateTime(2008, 12, 28),
+                Price = 3.99M,
+                Sizes = new[] { "Small", "Medium", "Large" }
+            };
+
+            var output = JsonConvert.SerializeObject(product, Formatting.Indented);
+
+            //{
+            //  "Name": "Apple",
+            //  "ExpiryDate": new Date(1230422400000),
+            //  "Price": 3.99,
+            //  "Sizes": [
+            //    "Small",
+            //    "Medium",
+            //    "Large"
+            //  ]
+            //}
+
+            Product result = null;
+            Action deserializeObject = () =>
+                result = (Product)JsonConvertStrict.DeserializeObject(
+                    output,
+                    typeof(Product),
+                    new StrictJsonSerializerSettings());
+
+            deserializeObject.Should().NotThrow();
+
+            result.Should().NotBeNull();
+        }
     }
 }

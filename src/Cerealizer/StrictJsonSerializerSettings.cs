@@ -1,13 +1,14 @@
-﻿using Newtonsoft.Json;
-
-namespace Cerealizer;
-
-public class StrictJsonSerializerSettings : JsonSerializerSettings
+﻿namespace Cerealizer
 {
-    public StrictJsonSerializerSettings()
-    {
-        MissingMemberHandling = MissingMemberHandling.Error;
-    }
+    using Newtonsoft.Json;
 
-    public MissingTypeMemberHandling MissingTypeMemberHandling { get; set; } = MissingTypeMemberHandling.Error;
+    public class StrictJsonSerializerSettings : JsonSerializerSettings
+    {
+        public StrictJsonSerializerSettings()
+        {
+            MissingMemberHandling = MissingMemberHandling.Error;
+        }
+
+        public MissingTypeMemberHandling MissingTypeMemberHandling { get; set; } = MissingTypeMemberHandling.Error;
+    }
 }

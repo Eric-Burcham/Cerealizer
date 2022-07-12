@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace Cerealizer;
-
-internal static class Extensions
+﻿namespace Cerealizer
 {
-    public static bool IsNullOrEmpty<T>(this IList<T> list)
+    using System.Collections.Generic;
+
+    internal static class Extensions
     {
-        return list == null || list.Count == 0;
+        public static bool IsNullOrEmpty<T>(this IList<T> list)
+        {
+            return list == null || list.Count == 0;
+        }
     }
 }
