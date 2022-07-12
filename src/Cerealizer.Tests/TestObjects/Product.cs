@@ -2,8 +2,8 @@
 
 public class Product
 {
+    public DateTime ExpiryDate = new(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     public string Name;
-    public DateTime ExpiryDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     public decimal Price;
     public string[] Sizes;
 
@@ -11,9 +11,9 @@ public class Product
     {
         if (obj is Product)
         {
-            Product p = (Product)obj;
+            var p = (Product)obj;
 
-            return (p.Name == Name && p.ExpiryDate == ExpiryDate && p.Price == Price);
+            return p.Name == Name && p.ExpiryDate == ExpiryDate && p.Price == Price;
         }
 
         return base.Equals(obj);
