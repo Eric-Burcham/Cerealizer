@@ -49,7 +49,7 @@
         public static StrictJsonSerializer CreateDefault()
         {
             // copy static to local variable to avoid concurrency issues
-            var defaultSettings = JsonConvertStrict.DefaultSettings?.Invoke();
+            var defaultSettings = StrictJsonConvert.DefaultSettings?.Invoke();
 
             return Create(defaultSettings);
         }
@@ -75,6 +75,13 @@
             return base.Deserialize(reader, objectType);
         }
 
+        internal bool IsCheckAdditionalContentSet()
+        {
+            var checkAdditionalContent = this.GetPrivateFieldValue<bool?>("_checkAdditionalContent");
+
+            return checkAdditionalContent != null;
+        }
+
         private static void ApplySerializerSettings(StrictJsonSerializer serializer, StrictJsonSerializerSettings settings)
         {
             if (!settings.Converters.IsNullOrEmpty())
@@ -88,43 +95,151 @@
                 }
             }
 
-            serializer.MissingTypeMemberHandling = settings.MissingTypeMemberHandling;
-            serializer.TypeNameHandling = settings.TypeNameHandling;
-            serializer.MetadataPropertyHandling = settings.MetadataPropertyHandling;
-            serializer.TypeNameAssemblyFormatHandling = settings.TypeNameAssemblyFormatHandling;
-            serializer.PreserveReferencesHandling = settings.PreserveReferencesHandling;
-            serializer.ReferenceLoopHandling = settings.ReferenceLoopHandling;
-            serializer.MissingMemberHandling = settings.MissingMemberHandling;
-            serializer.ObjectCreationHandling = settings.ObjectCreationHandling;
-            serializer.NullValueHandling = settings.NullValueHandling;
-            serializer.DefaultValueHandling = settings.DefaultValueHandling;
-            serializer.ConstructorHandling = settings.ConstructorHandling;
-            serializer.Context = settings.Context;
-            serializer.CheckAdditionalContent = settings.CheckAdditionalContent;
-            serializer.Error += settings.Error;
-            serializer.ContractResolver = settings.ContractResolver!;
-            if (settings.ReferenceResolverProvider != null)
+            if (settings.ContractResolver != null)
             {
-                serializer.ReferenceResolver = settings.ReferenceResolverProvider();
+                serializer.ContractResolver = settings.ContractResolver;
             }
 
-            serializer.TraceWriter = settings.TraceWriter;
-            serializer.EqualityComparer = settings.EqualityComparer;
+            if (settings.HasConstructorHandlingValue)
+            {
+                serializer.ConstructorHandling = settings.ConstructorHandling;
+            }
+
+            if (settings.HasCheckAdditionalContentValue)
+            {
+                serializer.CheckAdditionalContent = settings.CheckAdditionalContent;
+            }
+
+            if (settings.HasContextValue)
+            {
+                serializer.Context = settings.Context;
+            }
+
+            if (settings.HasCultureValue)
+            {
+                serializer.Culture = settings.Culture;
+            }
+
+            if (settings.HasDateFormatHandlingValue)
+            {
+                serializer.DateFormatHandling = settings.DateFormatHandling;
+            }
+
+            if (settings.HasDateFormatStringValue)
+            {
+                serializer.DateFormatString = settings.DateFormatString;
+            }
+
+            if (settings.HasDateParseHandlingValue)
+            {
+                serializer.DateParseHandling = settings.DateParseHandling;
+            }
+
+            if (settings.HasDateTimeZoneHandlingValue)
+            {
+                serializer.DateTimeZoneHandling = settings.DateTimeZoneHandling;
+            }
+
+            if (settings.HasDefaultValueHandlingValue)
+            {
+                serializer.DefaultValueHandling = settings.DefaultValueHandling;
+            }
+
+            if (settings.EqualityComparer != null)
+            {
+                serializer.EqualityComparer = settings.EqualityComparer;
+            }
+
             if (settings.SerializationBinder != null)
             {
                 serializer.SerializationBinder = settings.SerializationBinder;
             }
 
-            serializer.Formatting = settings.Formatting;
-            serializer.DateFormatHandling = settings.DateFormatHandling;
-            serializer.DateTimeZoneHandling = settings.DateTimeZoneHandling;
-            serializer.DateParseHandling = settings.DateParseHandling;
-            serializer.DateFormatString = settings.DateFormatString;
-            serializer.FloatFormatHandling = settings.FloatFormatHandling;
-            serializer.FloatParseHandling = settings.FloatParseHandling;
-            serializer.StringEscapeHandling = settings.StringEscapeHandling;
-            serializer.Culture = settings.Culture;
-            serializer.MaxDepth = settings.MaxDepth;
+            if (settings.Error != null)
+            {
+                serializer.Error += settings.Error;
+            }
+
+            if (settings.HasFloatFormatHandlingValue)
+            {
+                serializer.FloatFormatHandling = settings.FloatFormatHandling;
+            }
+
+            if (settings.HasFloatParseHandlingValue)
+            {
+                serializer.FloatParseHandling = settings.FloatParseHandling;
+            }
+
+            if (settings.HasFormattingValue)
+            {
+                serializer.Formatting = settings.Formatting;
+            }
+
+            if (settings.HasMaxDepthValue)
+            {
+                serializer.MaxDepth = settings.MaxDepth;
+            }
+
+            if (settings.HasMetadataPropertyHandlingValue)
+            {
+                serializer.MetadataPropertyHandling = settings.MetadataPropertyHandling;
+            }
+
+            if (settings.HasMissingMemberHandlingValue)
+            {
+                serializer.MissingMemberHandling = settings.MissingMemberHandling;
+            }
+
+            serializer.MissingTypeMemberHandling = settings.MissingTypeMemberHandling;
+            if (settings.HasNullValueHandlingValue)
+            {
+                serializer.NullValueHandling = settings.NullValueHandling;
+            }
+
+            if (settings.HasObjectCreationHandlingValue)
+            {
+                serializer.ObjectCreationHandling = settings.ObjectCreationHandling;
+            }
+
+            if (settings.HasPreserveReferencesHandlingValue)
+            {
+                serializer.PreserveReferencesHandling = settings.PreserveReferencesHandling;
+            }
+
+            if (settings.HasReferenceLoopHandlingValue)
+            {
+                serializer.ReferenceLoopHandling = settings.ReferenceLoopHandling;
+            }
+
+            if (settings.ReferenceResolverProvider != null)
+            {
+                serializer.ReferenceResolver = settings.ReferenceResolverProvider();
+            }
+
+            if (settings.SerializationBinder != null)
+            {
+                serializer.SerializationBinder = settings.SerializationBinder;
+            }
+
+            if (settings.HasStringEscapeHandlingValue)
+            {
+                serializer.StringEscapeHandling = settings.StringEscapeHandling;
+            }
+
+            if (settings.TraceWriter != null)
+            {
+                serializer.TraceWriter = settings.TraceWriter;
+            }
+
+            if (settings.HasTypeNameAssemblyFormatHandlingValue)
+            {
+                serializer.TypeNameAssemblyFormatHandling = settings.TypeNameAssemblyFormatHandling;
+            }
+
+            if (settings.HasTypeNameHandlingValue)
+            {
+                serializer.TypeNameHandling = settings.TypeNameHandling;
+            }
         }
 
         private static JsonObjectContract GetContract(Type type)
@@ -164,7 +279,9 @@
 
             if (properties.Any())
             {
-                throw new JsonSerializationException("Could not find property 'MyPrice' on object of type 'ProductLong' in JSON payload.");
+                var propertyNames = string.Join(",", properties.OrderBy(x => x.PropertyName).Select(x => x.PropertyName));
+
+                throw new JsonSerializationException($"Could not find these properties on object of type '{objectType.FullName}' in JSON payload:  {propertyNames}.");
             }
         }
     }

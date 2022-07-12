@@ -8,11 +8,6 @@ namespace Cerealizer.Tests
 
     public class MissingTypeMemberHandlingTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void WhenTheTargetTypeIsMissingAPropertyAnExceptionIsThrown()
         {
@@ -39,16 +34,17 @@ namespace Cerealizer.Tests
 
             ProductLong result = null;
             Action deserializeObject = () =>
-                result = (ProductLong)JsonConvertStrict.DeserializeObject(
+                result = (ProductLong)StrictJsonConvert.DeserializeObject(
                     output,
                     typeof(ProductLong),
                     new StrictJsonSerializerSettings());
 
-            deserializeObject.Should().Throw<JsonSerializationException>().WithMessage($"Could not find property 'MyPrice' on object of type '{nameof(ProductLong)}' in JSON payload.");
+            deserializeObject.Should().Throw<JsonSerializationException>().WithMessage($"Could not find these properties on object of type '{typeof(ProductLong).FullName}' in JSON payload:  MyPrice.");
 
             result.Should().BeNull();
         }
 
+        [Test]
         public void WhenTheTargetTypeIsNotMissingAPropertyNoExceptionIsThrown()
         {
             var product = new Product
@@ -74,7 +70,7 @@ namespace Cerealizer.Tests
 
             Product result = null;
             Action deserializeObject = () =>
-                result = (Product)JsonConvertStrict.DeserializeObject(
+                result = (Product)StrictJsonConvert.DeserializeObject(
                     output,
                     typeof(Product),
                     new StrictJsonSerializerSettings());
