@@ -34,7 +34,7 @@ public class MissingTypeMemberHandlingTests
         //}
 
         ProductLong result = null;
-        Action deserializeObject = () => result = (ProductLong)JsonConvertStrict.DeserializeObject(output, typeof(ProductLong), new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
+        Action deserializeObject = () => result = (ProductLong)JsonConvertStrict.DeserializeObject(output, typeof(ProductLong), new StrictJsonSerializerSettings());
         deserializeObject.Should().Throw<JsonSerializationException>().WithMessage(
             $"Could not find property 'MyPrice' on object of type '{nameof(ProductLong)}' in JSON payload.");
 
