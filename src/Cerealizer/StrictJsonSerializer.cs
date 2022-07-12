@@ -67,10 +67,22 @@
 
         public new object? Deserialize(JsonReader reader, Type? objectType)
         {
+            if (reader is not RewindableJsonTextReader rewindableJsonTextReader)
+            {
+                throw new InvalidOperationException("The reader passed to this method must be rewindable");
+            }
+
+            return Deserialize(rewindableJsonTextReader, objectType);
+        }
+
+        public object? Deserialize(RewindableJsonTextReader reader, Type? objectType)
+        {
             if (_missingTypeMemberHandling == MissingTypeMemberHandling.Error)
             {
                 ValidateJsonPayloadMembers(reader, objectType);
             }
+
+            reader.Rewind();
 
             return base.Deserialize(reader, objectType);
         }
