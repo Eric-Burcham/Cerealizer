@@ -96,8 +96,10 @@
 
         private static void ApplySerializerSettings(StrictJsonSerializer serializer, StrictJsonSerializerSettings settings)
         {
+            // The base class already does 99% of what we need to do here in a private method.  I'm lazy.  Lets use that.
             typeof(StrictJsonSerializer).BaseType.InvokePrivateStaticMethod("ApplySerializerSettings", serializer, settings);
 
+            // The remaining 1%
             if (settings.MissingTypeMemberHandling.HasValue)
             {
                 serializer.MissingTypeMemberHandling = settings.MissingTypeMemberHandling.Value;

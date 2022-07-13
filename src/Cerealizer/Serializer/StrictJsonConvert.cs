@@ -2,9 +2,11 @@
 {
     using System;
 
+    using Newtonsoft.Json;
+
     public static class StrictJsonConvert
     {
-        public static Func<StrictJsonSerializerSettings> DefaultSettings { get; set; }
+        public static Func<StrictJsonSerializerSettings> DefaultSettings { get; set; } = () => new StrictJsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error, MissingTypeMemberHandling = MissingTypeMemberHandling.Error };
 
         public static object DeserializeObject(string value, Type type, StrictJsonSerializerSettings settings)
         {
