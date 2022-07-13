@@ -12,7 +12,7 @@
             MissingMemberHandling = MissingMemberHandling.Error;
         }
 
-        public MissingTypeMemberHandling MissingTypeMemberHandling { get; set; } = MissingTypeMemberHandling.Error;
+        public MissingTypeMemberHandling? MissingTypeMemberHandling { get; set; } = Cerealizer.MissingTypeMemberHandling.Error;
 
         internal bool HasCheckAdditionalContentValue => this.GetPrivateFieldValue<bool?>("_checkAdditionalContent") != null;
 

@@ -13,7 +13,7 @@
         /// <summary>
         ///     Gets or sets how missing members (e.g. JSON contains a property that isn't a member on the object) are handled
         ///     during deserialization.
-        ///     The default value is <see cref="MissingTypeMemberHandling.Ignore" />.
+        ///     The default value is Ignore.
         /// </summary>
         public virtual MissingTypeMemberHandling MissingTypeMemberHandling
         {
@@ -46,7 +46,7 @@
             return new StrictJsonSerializer();
         }
 
-        public static StrictJsonSerializer CreateDefault()
+        public new static StrictJsonSerializer CreateDefault()
         {
             // copy static to local variable to avoid concurrency issues
             var defaultSettings = StrictJsonConvert.DefaultSettings?.Invoke();
@@ -96,161 +96,11 @@
 
         private static void ApplySerializerSettings(StrictJsonSerializer serializer, StrictJsonSerializerSettings settings)
         {
-            if (!settings.Converters.IsNullOrEmpty())
+            typeof(StrictJsonSerializer).BaseType.InvokePrivateStaticMethod("ApplySerializerSettings", serializer, settings);
 
-                // insert settings converters at the beginning so they take precedence
-                // if user wants to remove one of the default converters they will have to do it manually
+            if (settings.MissingTypeMemberHandling.HasValue)
             {
-                for (var i = 0; i < settings.Converters.Count; i++)
-                {
-                    serializer.Converters.Insert(i, settings.Converters[i]);
-                }
-            }
-
-            if (settings.ContractResolver != null)
-            {
-                serializer.ContractResolver = settings.ContractResolver;
-            }
-
-            if (settings.HasConstructorHandlingValue)
-            {
-                serializer.ConstructorHandling = settings.ConstructorHandling;
-            }
-
-            if (settings.HasCheckAdditionalContentValue)
-            {
-                serializer.CheckAdditionalContent = settings.CheckAdditionalContent;
-            }
-
-            if (settings.HasContextValue)
-            {
-                serializer.Context = settings.Context;
-            }
-
-            if (settings.HasCultureValue)
-            {
-                serializer.Culture = settings.Culture;
-            }
-
-            if (settings.HasDateFormatHandlingValue)
-            {
-                serializer.DateFormatHandling = settings.DateFormatHandling;
-            }
-
-            if (settings.HasDateFormatStringValue)
-            {
-                serializer.DateFormatString = settings.DateFormatString;
-            }
-
-            if (settings.HasDateParseHandlingValue)
-            {
-                serializer.DateParseHandling = settings.DateParseHandling;
-            }
-
-            if (settings.HasDateTimeZoneHandlingValue)
-            {
-                serializer.DateTimeZoneHandling = settings.DateTimeZoneHandling;
-            }
-
-            if (settings.HasDefaultValueHandlingValue)
-            {
-                serializer.DefaultValueHandling = settings.DefaultValueHandling;
-            }
-
-            if (settings.EqualityComparer != null)
-            {
-                serializer.EqualityComparer = settings.EqualityComparer;
-            }
-
-            if (settings.SerializationBinder != null)
-            {
-                serializer.SerializationBinder = settings.SerializationBinder;
-            }
-
-            if (settings.Error != null)
-            {
-                serializer.Error += settings.Error;
-            }
-
-            if (settings.HasFloatFormatHandlingValue)
-            {
-                serializer.FloatFormatHandling = settings.FloatFormatHandling;
-            }
-
-            if (settings.HasFloatParseHandlingValue)
-            {
-                serializer.FloatParseHandling = settings.FloatParseHandling;
-            }
-
-            if (settings.HasFormattingValue)
-            {
-                serializer.Formatting = settings.Formatting;
-            }
-
-            if (settings.HasMaxDepthValue)
-            {
-                serializer.MaxDepth = settings.MaxDepth;
-            }
-
-            if (settings.HasMetadataPropertyHandlingValue)
-            {
-                serializer.MetadataPropertyHandling = settings.MetadataPropertyHandling;
-            }
-
-            if (settings.HasMissingMemberHandlingValue)
-            {
-                serializer.MissingMemberHandling = settings.MissingMemberHandling;
-            }
-
-            serializer.MissingTypeMemberHandling = settings.MissingTypeMemberHandling;
-            if (settings.HasNullValueHandlingValue)
-            {
-                serializer.NullValueHandling = settings.NullValueHandling;
-            }
-
-            if (settings.HasObjectCreationHandlingValue)
-            {
-                serializer.ObjectCreationHandling = settings.ObjectCreationHandling;
-            }
-
-            if (settings.HasPreserveReferencesHandlingValue)
-            {
-                serializer.PreserveReferencesHandling = settings.PreserveReferencesHandling;
-            }
-
-            if (settings.HasReferenceLoopHandlingValue)
-            {
-                serializer.ReferenceLoopHandling = settings.ReferenceLoopHandling;
-            }
-
-            if (settings.ReferenceResolverProvider != null)
-            {
-                serializer.ReferenceResolver = settings.ReferenceResolverProvider();
-            }
-
-            if (settings.SerializationBinder != null)
-            {
-                serializer.SerializationBinder = settings.SerializationBinder;
-            }
-
-            if (settings.HasStringEscapeHandlingValue)
-            {
-                serializer.StringEscapeHandling = settings.StringEscapeHandling;
-            }
-
-            if (settings.TraceWriter != null)
-            {
-                serializer.TraceWriter = settings.TraceWriter;
-            }
-
-            if (settings.HasTypeNameAssemblyFormatHandlingValue)
-            {
-                serializer.TypeNameAssemblyFormatHandling = settings.TypeNameAssemblyFormatHandling;
-            }
-
-            if (settings.HasTypeNameHandlingValue)
-            {
-                serializer.TypeNameHandling = settings.TypeNameHandling;
+                serializer.MissingTypeMemberHandling = settings.MissingTypeMemberHandling.Value;
             }
         }
 
