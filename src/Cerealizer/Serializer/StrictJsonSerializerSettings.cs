@@ -20,7 +20,7 @@
 
         internal bool HasContextValue => this.GetPrivateFieldValue<StreamingContext?>("_context") != null;
 
-        internal bool HasCultureValue => this.GetPrivateFieldValue<CultureInfo?>("_culture") != null;
+        internal bool HasCultureValue => this.GetPrivateFieldValue<CultureInfo>("_culture") != null;
 
         internal bool HasDateFormatHandlingValue => this.GetPrivateFieldValue<DateFormatHandling?>("_dateFormatHandling") != null;
 

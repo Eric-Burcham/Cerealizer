@@ -65,7 +65,7 @@
             return serializer;
         }
 
-        public new object? Deserialize(JsonReader reader, Type? objectType)
+        public new object Deserialize(JsonReader reader, Type objectType)
         {
             if (reader is not RewindableJsonTextReader rewindableJsonTextReader)
             {
@@ -75,7 +75,7 @@
             return Deserialize(rewindableJsonTextReader, objectType);
         }
 
-        public object? Deserialize(RewindableJsonTextReader reader, Type? objectType)
+        public object Deserialize(RewindableJsonTextReader reader, Type objectType)
         {
             if (_missingTypeMemberHandling == MissingTypeMemberHandling.Error)
             {
@@ -259,7 +259,7 @@
             return (JsonObjectContract)new DefaultContractResolver().ResolveContract(type);
         }
 
-        private static JsonObjectContract? GetContractSafe(Type? type)
+        private static JsonObjectContract GetContractSafe(Type type)
         {
             if (type == null)
             {
@@ -269,7 +269,7 @@
             return GetContract(type);
         }
 
-        private static void ValidateJsonPayloadMembers(JsonReader reader, Type? objectType)
+        private static void ValidateJsonPayloadMembers(JsonReader reader, Type objectType)
         {
             var contract = GetContractSafe(objectType);
             var properties = contract!.Properties.ToList();

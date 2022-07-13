@@ -6223,6 +6223,7 @@ action.ShouldThrow&lt;$ExpectedException$&gt;($Message$);</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Ajay/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Autofac/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Cacheable/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Cerealizer/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=children/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=children_0027s/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Colton/@EntryIndexedValue">True</s:Boolean>

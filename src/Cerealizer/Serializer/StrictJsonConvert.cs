@@ -4,7 +4,7 @@
 
     public static class StrictJsonConvert
     {
-        public static Func<StrictJsonSerializerSettings>? DefaultSettings { get; set; }
+        public static Func<StrictJsonSerializerSettings> DefaultSettings { get; set; }
 
         public static object DeserializeObject(string value, Type type, StrictJsonSerializerSettings settings)
         {
@@ -15,7 +15,7 @@
                 jsonSerializer.CheckAdditionalContent = true;
             }
 
-            using (var reader = new RewindableJsonTextReader(new RewindableStringReader(value)))
+            using (var reader = new RewindableJsonTextReader(value))
             {
                 return jsonSerializer.Deserialize(reader, type);
             }
