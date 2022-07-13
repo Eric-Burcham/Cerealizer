@@ -7,16 +7,16 @@
 
     using Newtonsoft.Json;
 
-    public class RewindableJsonTextReader : JsonReader, IJsonLineInfo, IRewind
+    public class RewindingJsonTextReader : RewindingJsonReader, IJsonLineInfo
     {
         private readonly string _value;
 
         private JsonTextReader _jsonReader;
 
-        public RewindableJsonTextReader(string value)
+        public RewindingJsonTextReader(string value)
         {
             _value = value;
-            InitializeReaders();
+            InitializeReader();
         }
 
         public override int Depth => _jsonReader.Depth;
@@ -133,9 +133,9 @@
             return _jsonReader.ReadAsync(cancellationToken);
         }
 
-        public void Rewind()
+        public override void Rewind()
         {
-            InitializeReaders();
+            InitializeReader();
         }
 
         public override string ToString()
@@ -143,8 +143,9 @@
             return _jsonReader.ToString();
         }
 
-        private void InitializeReaders()
+        private void InitializeReader()
         {
+            ((IDisposable)_jsonReader)?.Dispose();
             _jsonReader = new JsonTextReader(new StringReader(_value));
         }
     }

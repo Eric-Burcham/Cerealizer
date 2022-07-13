@@ -67,24 +67,12 @@
 
         public new object Deserialize(JsonReader reader, Type objectType)
         {
-            if (reader is not RewindableJsonTextReader rewindableJsonTextReader)
+            if (reader is not RewindingJsonReader typedReader)
             {
-                throw new InvalidOperationException("The reader passed to this method must be rewindable");
+                throw new InvalidOperationException("The reader passed to this method must be rewindable.");
             }
 
-            return Deserialize(rewindableJsonTextReader, objectType);
-        }
-
-        public object Deserialize(RewindableJsonTextReader reader, Type objectType)
-        {
-            if (_missingTypeMemberHandling == MissingTypeMemberHandling.Error)
-            {
-                ValidateJsonPayloadMembers(reader, objectType);
-            }
-
-            reader.Rewind();
-
-            return base.Deserialize(reader, objectType);
+            return DeserializeInternal(typedReader, objectType);
         }
 
         internal bool IsCheckAdditionalContentSet()
@@ -147,6 +135,18 @@
 
                 throw new JsonSerializationException($"Could not find these properties on object of type '{objectType.FullName}' in JSON payload:  {propertyNames}.");
             }
+        }
+
+        private object DeserializeInternal(RewindingJsonReader reader, Type objectType)
+        {
+            if (_missingTypeMemberHandling == MissingTypeMemberHandling.Error)
+            {
+                ValidateJsonPayloadMembers(reader, objectType);
+            }
+
+            reader.Rewind();
+
+            return base.Deserialize(reader, objectType);
         }
     }
 }

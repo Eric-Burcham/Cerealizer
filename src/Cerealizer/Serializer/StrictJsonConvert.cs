@@ -17,7 +17,7 @@
                 jsonSerializer.CheckAdditionalContent = true;
             }
 
-            using (var reader = new RewindableJsonTextReader(value))
+            using (var reader = new RewindingJsonTextReader(value))
             {
                 return jsonSerializer.Deserialize(reader, type);
             }
